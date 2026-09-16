@@ -17,8 +17,8 @@ buildExpired = false
 [params]
   env = "production"
   title = "Notebook"
-  description = "Notes on philosophy, religion, physics, and how minds learn."
-  keywords = ["philosophy", "religion", "physics", "educational psychology", "blog"]
+  description = "Random thoughts."
+  keywords = ["blog"]
   author = "Mikel"
   DateFormat = "January 2, 2006"
   defaultTheme = "auto" # auto | dark | light
@@ -50,7 +50,7 @@ buildExpired = false
     url = "index.xml"
   [[params.socialIcons]]
     name = "github"
-    url = "https://github.com/YOUR-GITHUB-USERNAME"
+    url = "https://github.com/mklmch"
 
   [params.assets]
     disableHLJS = true
