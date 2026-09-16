@@ -1,0 +1,112 @@
+baseURL = "https://YOUR-GITHUB-USERNAME.github.io/notebook/"
+languageCode = "en-us"
+title = "Notebook"
+theme = "PaperMod"
+enableRobotsTXT = true
+enableGitInfo = false
+buildDrafts = false
+buildFuture = false
+buildExpired = false
+
+[pagination]
+  pagerSize = 8
+
+[minify]
+  disableXML = true
+
+[params]
+  env = "production"
+  title = "Notebook"
+  description = "Notes on philosophy, religion, physics, and how minds learn."
+  keywords = ["philosophy", "religion", "physics", "educational psychology", "blog"]
+  author = "Mikel"
+  DateFormat = "January 2, 2006"
+  defaultTheme = "auto" # auto | dark | light
+  disableThemeToggle = false
+  ShowShareButtons = false
+  ShowReadingTime = true
+  displayFullLangName = true
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+  ShowWordCount = false
+  ShowRssButtonInSectionTermList = true
+  UseHugoToc = true
+  disableSpecial1stPost = false
+  disableScrollToTop = false
+  comments = false
+  hidemeta = false
+  hideSummary = false
+  showtoc = false
+  tocopen = false
+
+  # Home page ("profile-mode" style intro)
+  [params.homeInfoParams]
+    Title = "Notebook"
+    Content = "Occasional notes on philosophy, religion, physics, and how people learn — posted whenever something's worth writing down, not on a schedule."
+
+  [[params.socialIcons]]
+    name = "rss"
+    url = "index.xml"
+  [[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/YOUR-GITHUB-USERNAME"
+
+  [params.assets]
+    disableHLJS = true
+    favicon = "favicon.ico"
+
+  [params.fuseOpts]
+    isCaseSensitive = false
+    shouldSort = true
+    location = 0
+    distance = 1000
+    threshold = 0.4
+    minMatchCharLength = 0
+    keys = ["title", "permalink", "summary", "content"]
+
+[taxonomies]
+  tag = "tags"
+
+[[menu.main]]
+  identifier = "posts"
+  name = "Posts"
+  url = "/posts/"
+  weight = 10
+
+[[menu.main]]
+  identifier = "tags"
+  name = "Tags"
+  url = "/tags/"
+  weight = 20
+
+[[menu.main]]
+  identifier = "archives"
+  name = "Archive"
+  url = "/archives/"
+  weight = 30
+
+[[menu.main]]
+  identifier = "about"
+  name = "About"
+  url = "/about/"
+  weight = 40
+
+[[menu.main]]
+  identifier = "search"
+  name = "Search"
+  url = "/search/"
+  weight = 50
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[markup]
+  [markup.highlight]
+    noClasses = false
+    codeFences = true
+    guessSyntax = true
+    lineNos = false
+    style = "monokai"
+  [markup.goldmark.renderer]
+    unsafe = true
