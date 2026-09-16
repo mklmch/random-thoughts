@@ -1,6 +1,6 @@
 # notebook
 
-A Hugo site (theme: [PaperMod](https://github.com/adityatelange/hugo-PaperMod)) for casual, no-schedule writing on philosophy, religion, physics, educational psychology, and whatever else comes up.
+A Hugo site (theme: [PaperMod](https://github.com/adityatelange/hugo-PaperMod)) for casual, no-schedule writing on whatever else comes up.
 
 ## Writing a new post
 
