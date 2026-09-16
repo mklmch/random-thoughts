@@ -1,4 +1,4 @@
-baseURL = "https://YOUR-GITHUB-USERNAME.github.io/notebook/"
+baseURL = "https://mklmch.github.io/notebook/"
 languageCode = "en-us"
 title = "Notebook"
 theme = "PaperMod"
