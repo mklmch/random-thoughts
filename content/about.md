@@ -6,7 +6,7 @@ ShowReadingTime: false
 ShowWordCount: false
 ---
 
-I'm a grad student, and this is where I write down things I've been reading, thinking about, or arguing with myself over — mostly philosophy, religion, physics, and educational psychology, with whatever else wanders in.
+I'm a grad student, and this is where I write down things I've been reading, thinking about, or arguing with myself over, with whatever else wanders in.
 
 There's no schedule here. I post when something is worth writing down, not on any kind of cadence, so expect long gaps and the occasional flurry.
 
