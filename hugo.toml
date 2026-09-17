@@ -1,4 +1,4 @@
-baseURL = "https://mklmch.github.io/notebook/"
+baseURL = "https://mklmch.github.io/random-thoughts/"
 languageCode = "en-us"
 title = "Notebook"
 theme = "PaperMod"
@@ -43,7 +43,7 @@ buildExpired = false
   # Home page ("profile-mode" style intro)
   [params.homeInfoParams]
     Title = "Notebook"
-    Content = "Occasional notes on philosophy, religion, physics, and how people learn — posted whenever something's worth writing down, not on a schedule."
+    Content = "Occasional notes posted whenever something's worth writing down, not on a schedule."
 
   [[params.socialIcons]]
     name = "rss"
