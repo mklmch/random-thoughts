@@ -82,6 +82,18 @@ buildExpired = false
   weight = 15
 
 [[menu.main]]
+  identifier = "bubbles"
+  name = "Bubbles"
+  url = "/bubbles/"
+  weight = 17
+
+[[menu.main]]
+  identifier = "disco"
+  name = "The Record Bin"
+  url = "/disco/"
+  weight = 18
+
+[[menu.main]]
   identifier = "tags"
   name = "Tags"
   url = "/tags/"

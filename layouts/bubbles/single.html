@@ -1,0 +1,19 @@
+{{ define "main" }}
+<article class="post-single bubble-single">
+  <header class="post-header">
+    <span class="bubble-entry-date">{{ .Date.Format "January 2, 2006" }}</span>
+    <h1 class="post-title">{{ .Title }}</h1>
+    {{ if .Params.tags }}
+    <div class="bubble-tags">
+      {{ range .Params.tags }}<span class="bubble-tag">{{ . }}</span>{{ end }}
+    </div>
+    {{ end }}
+  </header>
+
+  <div class="bubble-card">
+    {{ .Content }}
+  </div>
+
+  <p class="bubble-back"><a href="{{ .Parent.RelPermalink }}">&larr; back to Bubbles</a></p>
+</article>
+{{ end }}

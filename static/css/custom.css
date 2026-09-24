@@ -70,6 +70,38 @@
   color-scheme: light;
 }
 
+/* ---- Palette: "bubbles" world — pastel, iridescent, soft ----
+   Also applied regardless of the light/dark toggle: this one is
+   about the mood of the page, not the time of day you're reading it. */
+:root[data-world="bubbles"] {
+  --theme: rgb(250, 242, 248);
+  --entry: rgb(255, 251, 253);
+  --primary: rgb(60, 48, 76);
+  --secondary: rgb(150, 128, 160);
+  --tertiary: rgb(232, 213, 233);
+  --content: rgb(72, 59, 87);
+  --code-block-bg: rgb(247, 240, 248);
+  --code-bg: rgb(238, 225, 238);
+  --border: rgb(234, 216, 234);
+  --accent: rgb(188, 122, 173);
+  color-scheme: light;
+}
+
+/* ---- Palette: "disco" world — vivid, dark-glass panels over a sparkly wash ---- */
+:root[data-world="disco"] {
+  --theme: rgb(21, 14, 31);
+  --entry: rgb(31, 21, 44);
+  --primary: rgb(246, 240, 250);
+  --secondary: rgb(199, 173, 216);
+  --tertiary: rgb(75, 50, 96);
+  --content: rgb(226, 213, 236);
+  --code-block-bg: rgb(17, 11, 25);
+  --code-bg: rgb(42, 28, 58);
+  --border: rgb(78, 52, 100);
+  --accent: rgb(255, 105, 180);
+  color-scheme: dark;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
@@ -82,8 +114,16 @@ body {
   --cursor-active: url("/cursors/star-active.png") 16 16, url("/cursors/star-active.svg") 16 16;
 }
 :root[data-world="recipes"] {
-  --cursor-default: url("/cursors/strawberry.png") 15 17;
-  --cursor-active: url("/cursors/cherry.png") 13 17;
+  --cursor-default: url("/cursors/cloud.png") 18 13;
+  --cursor-active: url("/cursors/cloud-active.png") 18 16;
+}
+:root[data-world="bubbles"] {
+  --cursor-default: url("/cursors/bubble.png") 16 15;
+  --cursor-active: url("/cursors/bubble-active.png") 19 18;
+}
+:root[data-world="disco"] {
+  --cursor-default: url("/cursors/discoball.png") 15 15;
+  --cursor-active: url("/cursors/discoball-active.png") 18 18;
 }
 * {
   cursor: inherit;
@@ -208,6 +248,81 @@ article a:hover,
   50% { transform: translateX(36px) translateY(-8px); }
 }
 
+/* ---- Background glow + ambient canvas (bubbles world) ----
+   A slow, shifting iridescent wash behind soft drifting bubbles. */
+#bg-bubbles-glow {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 200, 230, 0.55), transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(200, 225, 255, 0.5), transparent 45%),
+    radial-gradient(circle at 30% 85%, rgba(210, 245, 235, 0.5), transparent 45%),
+    radial-gradient(circle at 80% 80%, rgba(235, 210, 255, 0.5), transparent 45%);
+  animation: bubbles-glow-shift 22s ease-in-out infinite;
+  background-size: 160% 160%;
+}
+:root[data-world="bubbles"] #bg-bubbles-glow {
+  display: block;
+}
+@keyframes bubbles-glow-shift {
+  0%, 100% { background-position: 0% 0%, 100% 0%, 0% 100%, 100% 100%; filter: hue-rotate(0deg); }
+  50% { background-position: 8% 6%, 92% 8%, 6% 92%, 94% 90%; filter: hue-rotate(18deg); }
+}
+#bg-bubbles {
+  display: none;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+}
+:root[data-world="bubbles"] #bg-bubbles {
+  display: block;
+}
+
+/* ---- Background glow + ambient canvas (disco world) ----
+   A rotating jewel-toned glow behind a colorful twinkle field. */
+#bg-disco-glow {
+  display: none;
+  position: fixed;
+  inset: -20%;
+  z-index: -2;
+  pointer-events: none;
+  background: conic-gradient(
+    from 0deg,
+    rgba(255, 90, 170, 0.35),
+    rgba(130, 90, 255, 0.3),
+    rgba(90, 170, 255, 0.3),
+    rgba(255, 200, 90, 0.28),
+    rgba(255, 90, 170, 0.35)
+  );
+  filter: blur(60px);
+  animation: disco-glow-spin 34s linear infinite;
+}
+:root[data-world="disco"] #bg-disco-glow {
+  display: block;
+}
+@keyframes disco-glow-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+#bg-disco {
+  display: none;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+}
+:root[data-world="disco"] #bg-disco {
+  display: block;
+}
+
 /* ---- Cursor star trail ---- */
 .cursor-star {
   position: fixed;
@@ -241,42 +356,114 @@ article a:hover,
   }
 }
 
-/* ---- Cursor fruit trail (recipes world) ---- */
-.cursor-fruit {
+/* ---- Cursor cloud trail (recipes world) ---- */
+.cursor-cloud {
   position: fixed;
   top: 0;
   left: 0;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1;
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
-  animation: cursor-fruit-fade 900ms ease-out forwards;
+  animation: cursor-cloud-fade 1100ms ease-out forwards;
   will-change: transform, opacity;
 }
 
-@keyframes cursor-fruit-fade {
+@keyframes cursor-cloud-fade {
   0% {
-    opacity: 0.95;
-    transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(0.6);
   }
-  30% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.2) rotate(-10deg);
+  25% {
+    opacity: 0.95;
+    transform: translate(-50%, -50%) scale(1.05);
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, calc(-50% + 16px)) scale(0.6) rotate(16deg);
+    transform: translate(-50%, calc(-50% - 22px)) scale(1.15);
   }
+}
+
+/* ---- Cursor bubble trail (bubbles world) ---- */
+.cursor-bubble {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.2) 40%, rgba(200, 230, 255, 0.3) 70%, rgba(210, 180, 245, 0.2) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.45), inset 0 0 4px rgba(255, 255, 255, 0.55);
+  animation: cursor-bubble-rise 1300ms ease-out forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes cursor-bubble-rise {
+  0% { opacity: 0.9; transform: translate(-50%, -50%) translateY(0) translateX(0) scale(0.5); }
+  55% { opacity: 0.95; transform: translate(-50%, -50%) translateY(-26px) translateX(6px) scale(1); }
+  85% { opacity: 0.75; transform: translate(-50%, -50%) translateY(-42px) translateX(-4px) scale(1.15); }
+  100% { opacity: 0; transform: translate(-50%, -50%) translateY(-54px) translateX(2px) scale(1.55); }
+}
+
+/* ---- Cursor disco-ball / vinyl-record trail (disco world) ---- */
+.cursor-discoball {
+  position: fixed;
+  top: 0;
+  left: 0;
+  font-size: 16px;
+  line-height: 1;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  animation: cursor-discoball-fade 900ms ease-out forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes cursor-discoball-fade {
+  0% { opacity: 0.95; transform: translate(-50%, -50%) scale(0.6) rotate(0deg); }
+  30% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(60deg); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(0.7) rotate(200deg) translateY(-10px); }
+}
+
+.cursor-record {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 17px;
+  height: 17px;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='19' fill='%23181018'/%3E%3Ccircle cx='20' cy='20' r='19' fill='none' stroke='%23433a48' stroke-width='0.6'/%3E%3Ccircle cx='20' cy='20' r='15' fill='none' stroke='%23433a48' stroke-width='0.5'/%3E%3Ccircle cx='20' cy='20' r='11' fill='none' stroke='%23433a48' stroke-width='0.5'/%3E%3Ccircle cx='20' cy='20' r='7' fill='%23ff69b4'/%3E%3Ccircle cx='20' cy='20' r='1.5' fill='%23181018'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: translate(-50%, -50%);
+  animation: cursor-record-fade 950ms ease-out forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes cursor-record-fade {
+  0% { opacity: 0.95; transform: translate(-50%, -50%) scale(0.6) rotate(0deg); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.1) rotate(300deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .cursor-star,
-  .cursor-fruit {
+  .cursor-cloud,
+  .cursor-bubble,
+  .cursor-discoball,
+  .cursor-record {
     display: none;
   }
   #bg-stars,
-  #bg-clouds .cloud {
+  #bg-clouds .cloud,
+  #bg-bubbles,
+  #bg-bubbles-glow,
+  #bg-disco,
+  #bg-disco-glow {
     display: none;
   }
   .entry {
@@ -461,4 +648,167 @@ article a:hover,
   .ingredient-list li {
     border-bottom: 1px solid #ccc;
   }
+}
+
+/* =================================================================
+   Bubbles: a stream of short, dated fragments
+   ================================================================= */
+
+.bubble-stream {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.bubble-entry {
+  display: block;
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 1.1rem 1.3rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.bubble-entry:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(150, 110, 170, 0.16);
+}
+.bubble-entry-date {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--secondary);
+  letter-spacing: 0.03em;
+  margin-bottom: 0.3rem;
+}
+.bubble-entry-title {
+  margin: 0 0 0.4rem;
+  font-size: 1.15rem;
+}
+.bubble-entry-summary {
+  margin: 0;
+  color: var(--content);
+  font-size: 0.94rem;
+}
+
+.bubble-single .post-header {
+  border-bottom: none;
+}
+.bubble-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+}
+.bubble-tag {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: var(--code-bg);
+  color: var(--secondary);
+}
+.bubble-card {
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 1.6rem 1.8rem;
+  margin-top: 1rem;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+.bubble-back {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+}
+
+/* =================================================================
+   The Record Bin: album/song cards with a spinning vinyl accent
+   ================================================================= */
+
+.record-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--content-gap);
+  margin-top: 1.5rem;
+}
+
+.record-card {
+  display: flex;
+  gap: 0.9rem;
+  align-items: flex-start;
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.2rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.record-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 105, 180, 0.18);
+  border-color: var(--accent);
+}
+.record-card:hover .record-disc {
+  animation-play-state: running;
+}
+
+.record-disc {
+  display: inline-block;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, var(--accent) 0 14%, #16101c 15% 16%, #16101c 16%),
+    repeating-radial-gradient(circle at center, #221a2a 0 2px, #16101c 2px 4px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  animation: record-spin 3.2s linear infinite;
+  animation-play-state: paused;
+}
+.record-disc-large {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 0.6rem;
+  animation-play-state: running;
+}
+@keyframes record-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.record-card-body h3 {
+  margin: 0 0 0.15rem;
+  font-size: 1.1rem;
+}
+.record-artist {
+  margin: 0 0 0.4rem;
+  color: var(--secondary);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+.record-summary {
+  margin: 0 0 0.6rem;
+  color: var(--content);
+  font-size: 0.92rem;
+}
+.record-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.record-mood {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--theme);
+}
+.record-tag {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: var(--code-bg);
+  color: var(--secondary);
+}
+.record-back {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
 }

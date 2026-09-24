@@ -1,0 +1,25 @@
+{{ define "main" }}
+<article class="post-single">
+  <header class="page-header">
+    <h1>{{ .Title }}</h1>
+    {{ with .Content }}<div class="post-content">{{ . }}</div>{{ end }}
+  </header>
+
+  <div class="record-grid">
+    {{ range .Pages.ByDate.Reverse }}
+      <a class="record-card" href="{{ .RelPermalink }}">
+        <span class="record-disc" aria-hidden="true"></span>
+        <div class="record-card-body">
+          <h3>{{ .Title }}</h3>
+          {{ if .Params.artist }}<p class="record-artist">{{ .Params.artist }}</p>{{ end }}
+          <p class="record-summary">{{ .Summary }}</p>
+          <div class="record-meta-row">
+            {{ if .Params.mood }}<span class="record-mood">{{ .Params.mood }}</span>{{ end }}
+            {{ range .Params.tags }}<span class="record-tag">{{ . }}</span>{{ end }}
+          </div>
+        </div>
+      </a>
+    {{ end }}
+  </div>
+</article>
+{{ end }}

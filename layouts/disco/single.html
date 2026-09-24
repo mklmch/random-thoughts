@@ -1,0 +1,18 @@
+{{ define "main" }}
+<article class="post-single">
+  <header class="post-header">
+    <span class="record-disc record-disc-large" aria-hidden="true"></span>
+    <h1 class="post-title">{{ .Title }}</h1>
+    {{ if .Params.artist }}<p class="record-artist">{{ .Params.artist }}</p>{{ end }}
+
+    <div class="record-meta-row">
+      {{ if .Params.mood }}<span class="record-mood">{{ .Params.mood }}</span>{{ end }}
+      {{ range .Params.tags }}<span class="record-tag">{{ . }}</span>{{ end }}
+    </div>
+  </header>
+
+  {{ .Content }}
+
+  <p class="record-back"><a href="{{ .Parent.RelPermalink }}">&larr; back to The Record Bin</a></p>
+</article>
+{{ end }}

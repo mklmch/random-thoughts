@@ -6,6 +6,8 @@
 {{- $theme := site.Params.defaultTheme | default "auto" }}
 {{- $world := "notebook" }}
 {{- if eq .Section "recipes" }}{{ $world = "recipes" }}{{ end }}
+{{- if eq .Section "bubbles" }}{{ $world = "bubbles" }}{{ end }}
+{{- if eq .Section "disco" }}{{ $world = "disco" }}{{ end }}
 {{- if eq $theme "dark" }}
 <html lang="{{ site.Language }}" dir="{{ .Language.LanguageDirection | default "auto" }}" data-theme="dark" data-world="{{ $world }}">
 {{- else if eq $theme "light" }}
