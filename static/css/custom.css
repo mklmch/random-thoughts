@@ -57,6 +57,35 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
+/* ---- Custom star cursor, replacing the system pointer everywhere ---- */
+* {
+  cursor: inherit;
+}
+html {
+  cursor: url("/cursors/star.svg") 16 16, auto;
+}
+a,
+button,
+[role="button"],
+input[type="submit"],
+input[type="button"],
+label[for],
+.entry-link,
+.paginav a,
+header .logo a,
+#menu a,
+.social-icons a,
+.share-buttons a,
+.top-link {
+  cursor: url("/cursors/star-active.svg") 16 16, pointer;
+}
+/* Keep native text-entry cursors where people are actually typing */
+input,
+textarea,
+[contenteditable="true"] {
+  cursor: auto;
+}
+
 .post-title,
 .entry-header h2,
 h1, h2, h3,
