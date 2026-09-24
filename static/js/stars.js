@@ -54,16 +54,18 @@
 
   function seedStars() {
     var area = window.innerWidth * window.innerHeight;
-    var count = Math.min(180, Math.max(50, Math.round(area / 9000)));
+    var count = Math.min(420, Math.max(140, Math.round(area / 3200)));
     stars = [];
     for (var i = 0; i < count; i++) {
+      var big = Math.random() < 0.12; // a handful of standout bright stars
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        r: (0.5 + Math.random() * 1.4) * dpr,
-        base: 0.15 + Math.random() * 0.5,
+        r: (big ? 1.6 + Math.random() * 1.6 : 0.7 + Math.random() * 1.1) * dpr,
+        base: big ? 0.75 + Math.random() * 0.25 : 0.45 + Math.random() * 0.4,
+        glow: big,
         phase: Math.random() * Math.PI * 2,
-        speed: 0.0006 + Math.random() * 0.0009
+        speed: 0.0006 + Math.random() * 0.0011
       });
     }
   }
@@ -73,12 +75,19 @@
     for (var i = 0; i < stars.length; i++) {
       var s = stars[i];
       var twinkle = Math.sin(t * s.speed + s.phase) * 0.5 + 0.5;
-      var alpha = s.base * (0.35 + 0.65 * twinkle);
+      var alpha = s.base * (0.55 + 0.45 * twinkle);
       ctx.beginPath();
-      ctx.fillStyle = "rgba(201, 212, 222, " + alpha.toFixed(3) + ")";
+      if (s.glow) {
+        ctx.shadowBlur = 6 * dpr;
+        ctx.shadowColor = "rgba(215, 226, 235, " + (alpha * 0.9).toFixed(3) + ")";
+      } else {
+        ctx.shadowBlur = 0;
+      }
+      ctx.fillStyle = "rgba(215, 226, 235, " + alpha.toFixed(3) + ")";
       ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
       ctx.fill();
     }
+    ctx.shadowBlur = 0;
     requestAnimationFrame(draw);
   }
 
