@@ -1,0 +1,46 @@
+{{ define "main" }}
+<article class="post-single">
+  <header class="page-header">
+    <h1>{{ .Title }}</h1>
+    {{ with .Content }}<div class="post-content">{{ . }}</div>{{ end }}
+  </header>
+
+  <div class="recipe-filters">
+    <input type="text" class="recipe-search-input" id="recipe-search"
+           placeholder="Search by name or ingredient&hellip;" autocomplete="off">
+    <div class="recipe-chip-row" id="recipe-tag-chips">
+      {{ $tagSet := slice }}
+      {{ range .Pages }}
+        {{ range .Params.tags }}
+          {{ if not (in $tagSet .) }}{{ $tagSet = $tagSet | append . }}{{ end }}
+        {{ end }}
+      {{ end }}
+      {{ range sort $tagSet }}
+        <button type="button" class="recipe-chip" data-tag="{{ . | lower }}">{{ . }}</button>
+      {{ end }}
+    </div>
+  </div>
+
+  <p class="recipe-empty" id="recipe-empty" style="display:none;">No recipes match &mdash; try a different search or tag.</p>
+
+  <div class="recipe-grid" id="recipe-grid">
+    {{ range .Pages.ByTitle }}
+      {{ $ingredientNames := slice }}
+      {{ range .Params.ingredients }}{{ $ingredientNames = $ingredientNames | append .item }}{{ end }}
+      {{ $searchBlob := printf "%s %s %s" .Title .Summary (delimit $ingredientNames " ") | lower }}
+      <a class="recipe-card" href="{{ .RelPermalink }}"
+         data-search="{{ $searchBlob }}"
+         data-tags="{{ delimit .Params.tags "," | lower }}">
+        <h3>{{ .Title }}</h3>
+        <div class="recipe-meta">
+          {{ if .Params.prep_time }}Prep {{ .Params.prep_time }}{{ end }}{{ if and .Params.prep_time .Params.cook_time }} &middot; {{ end }}{{ if .Params.cook_time }}Cook {{ .Params.cook_time }}{{ end }}{{ if .Params.servings }} &middot; Serves {{ .Params.servings }}{{ end }}
+        </div>
+        <p>{{ .Summary }}</p>
+        <div class="recipe-tags">
+          {{ range .Params.tags }}<span class="recipe-tag">{{ . }}</span>{{ end }}
+        </div>
+      </a>
+    {{ end }}
+  </div>
+</article>
+{{ end }}

@@ -4,9 +4,11 @@
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduceMotion) return;
 
+  var world = document.documentElement.dataset.world || "notebook";
   var STAR_COLORS = ["#c9d4de", "#9fb2c4", "#7592ab", "#b7c6d6", "#4f6a85"];
+  var FRUITS = ["🍓", "🍊", "🍋", "🍇", "🫐", "🍒", "🍉", "🥝"]; // strawberry, orange, lemon, grapes, blueberries, cherries, watermelon, kiwi
 
-  /* ---------------- Cursor star trail ---------------- */
+  /* ---------------- Cursor trail (stars, or fruit in the recipes world) ---------------- */
   var canHover = window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   if (canHover) {
     var lastSpawn = 0;
@@ -17,23 +19,29 @@
       if (now - lastSpawn < MIN_INTERVAL) return;
       lastSpawn = now;
 
-      var star = document.createElement("div");
-      star.className = "cursor-star";
-      star.style.left = e.clientX + "px";
-      star.style.top = e.clientY + "px";
-      var size = 6 + Math.random() * 8;
-      star.style.width = size + "px";
-      star.style.height = size + "px";
-      star.style.backgroundColor = STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)];
-      document.body.appendChild(star);
+      var el = document.createElement("div");
+      if (world === "recipes") {
+        el.className = "cursor-fruit";
+        el.textContent = FRUITS[Math.floor(Math.random() * FRUITS.length)];
+      } else {
+        el.className = "cursor-star";
+        var size = 6 + Math.random() * 8;
+        el.style.width = size + "px";
+        el.style.height = size + "px";
+        el.style.backgroundColor = STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)];
+      }
+      el.style.left = e.clientX + "px";
+      el.style.top = e.clientY + "px";
+      document.body.appendChild(el);
 
-      star.addEventListener("animationend", function () {
-        star.remove();
+      el.addEventListener("animationend", function () {
+        el.remove();
       });
     }, { passive: true });
   }
 
-  /* ---------------- Background starfield ---------------- */
+  /* ---------------- Background starfield (notebook world only) ---------------- */
+  if (world !== "notebook") return;
   var canvas = document.getElementById("bg-stars");
   if (!canvas || !canvas.getContext) return;
   var ctx = canvas.getContext("2d");

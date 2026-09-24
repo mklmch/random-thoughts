@@ -16,6 +16,7 @@ buildExpired = false
 
 [params]
   env = "production"
+  mainSections = ["posts"]
   title = "Notebook"
   description = "Notes on philosophy, religion, physics, and how minds learn."
   keywords = ["philosophy", "religion", "physics", "educational psychology", "blog"]
@@ -73,6 +74,12 @@ buildExpired = false
   name = "Posts"
   url = "/posts/"
   weight = 10
+
+[[menu.main]]
+  identifier = "recipes"
+  name = "Recipes"
+  url = "/recipes/"
+  weight = 15
 
 [[menu.main]]
   identifier = "tags"

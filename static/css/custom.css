@@ -53,16 +53,43 @@
   --accent: rgb(140, 168, 194);
 }
 
+/* ---- Palette: "recipes" world — same family, lighter/airier mood ----
+   Applied regardless of the light/dark toggle: a cookbook you're using
+   at the counter should stay bright and legible. */
+:root[data-world="recipes"] {
+  --theme: rgb(241, 245, 249);
+  --entry: rgb(253, 254, 255);
+  --primary: rgb(51, 63, 78);
+  --secondary: rgb(112, 127, 143);
+  --tertiary: rgb(219, 228, 236);
+  --content: rgb(63, 76, 91);
+  --code-block-bg: rgb(240, 243, 247);
+  --code-bg: rgb(228, 235, 241);
+  --border: rgb(223, 231, 238);
+  --accent: rgb(83, 133, 165);
+  color-scheme: light;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* ---- Custom star cursor, replacing the system pointer everywhere ---- */
+/* ---- Custom cursor, replacing the system pointer everywhere ----
+   Which image is used is controlled by --cursor-default / --cursor-active,
+   which differ per "world" (notebook vs recipes) below. */
+:root {
+  --cursor-default: url("/cursors/star.png") 16 16, url("/cursors/star.svg") 16 16;
+  --cursor-active: url("/cursors/star-active.png") 16 16, url("/cursors/star-active.svg") 16 16;
+}
+:root[data-world="recipes"] {
+  --cursor-default: url("/cursors/strawberry.png") 15 17;
+  --cursor-active: url("/cursors/cherry.png") 13 17;
+}
 * {
   cursor: inherit;
 }
 html {
-  cursor: url("/cursors/star.png") 16 16, url("/cursors/star.svg") 16 16, auto;
+  cursor: var(--cursor-default), auto;
 }
 a,
 button,
@@ -76,8 +103,11 @@ header .logo a,
 #menu a,
 .social-icons a,
 .share-buttons a,
-.top-link {
-  cursor: url("/cursors/star-active.png") 16 16, url("/cursors/star-active.svg") 16 16, pointer;
+.top-link,
+.recipe-chip,
+.servings-btn,
+.print-btn {
+  cursor: var(--cursor-active), pointer;
 }
 /* Keep native text-entry cursors where people are actually typing */
 input,
@@ -143,6 +173,40 @@ article a:hover,
 #bg-stars.is-visible {
   opacity: 1;
 }
+:root[data-world="recipes"] #bg-stars {
+  display: none;
+}
+
+/* ---- Background clouds (recipes world only) ---- */
+#bg-clouds {
+  display: none;
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
+}
+:root[data-world="recipes"] #bg-clouds {
+  display: block;
+}
+#bg-clouds .cloud {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.65);
+  filter: blur(26px);
+}
+:root[data-theme="dark"] #bg-clouds .cloud {
+  background: rgba(210, 221, 232, 0.18);
+}
+#bg-clouds .cloud-a { width: 380px; height: 150px; top: 6%;  left: 8%;  animation: cloud-drift 26s ease-in-out infinite; }
+#bg-clouds .cloud-b { width: 260px; height: 110px; top: 22%; right: 10%; animation: cloud-drift 32s ease-in-out infinite -8s; }
+#bg-clouds .cloud-c { width: 460px; height: 170px; bottom: 14%; left: 22%; animation: cloud-drift 38s ease-in-out infinite -16s; opacity: 0.8; }
+#bg-clouds .cloud-d { width: 220px; height: 90px;  bottom: 30%; right: 24%; animation: cloud-drift 22s ease-in-out infinite -4s; opacity: 0.7; }
+
+@keyframes cloud-drift {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(36px) translateY(-8px); }
+}
 
 /* ---- Cursor star trail ---- */
 .cursor-star {
@@ -177,14 +241,224 @@ article a:hover,
   }
 }
 
+/* ---- Cursor fruit trail (recipes world) ---- */
+.cursor-fruit {
+  position: fixed;
+  top: 0;
+  left: 0;
+  font-size: 20px;
+  line-height: 1;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  animation: cursor-fruit-fade 900ms ease-out forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes cursor-fruit-fade {
+  0% {
+    opacity: 0.95;
+    transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2) rotate(-10deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 16px)) scale(0.6) rotate(16deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .cursor-star {
+  .cursor-star,
+  .cursor-fruit {
     display: none;
   }
-  #bg-stars {
+  #bg-stars,
+  #bg-clouds .cloud {
     display: none;
   }
   .entry {
     transition: none;
+  }
+}
+
+/* =================================================================
+   Recipes: cards, filter bar, ingredient list, servings, print
+   ================================================================= */
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--content-gap);
+  margin-top: 1.5rem;
+}
+
+.recipe-card {
+  display: block;
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.2rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.recipe-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(80, 100, 120, 0.12);
+}
+.recipe-card h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.15rem;
+}
+.recipe-card .recipe-meta {
+  color: var(--secondary);
+  font-size: 0.88rem;
+  margin-bottom: 0.5rem;
+}
+.recipe-card p {
+  color: var(--content);
+  font-size: 0.92rem;
+  margin: 0 0 0.6rem;
+}
+.recipe-card .recipe-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.recipe-tag {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background: var(--code-bg);
+  color: var(--secondary);
+}
+
+.recipe-filters {
+  margin-top: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.recipe-search-input {
+  width: 100%;
+  padding: 0.55rem 0.9rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--entry);
+  color: var(--primary);
+  font-size: 0.95rem;
+}
+.recipe-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+.recipe-chip {
+  border: 1px solid var(--border);
+  background: var(--entry);
+  color: var(--secondary);
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+}
+.recipe-chip.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--theme);
+}
+.recipe-empty {
+  color: var(--secondary);
+  margin-top: 1.5rem;
+  font-style: italic;
+}
+
+.recipe-meta-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  margin: 0.6rem 0 1.4rem;
+  color: var(--secondary);
+  font-size: 0.92rem;
+}
+
+.servings-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.servings-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--entry);
+  color: var(--primary);
+  font-size: 1rem;
+  line-height: 1;
+}
+.servings-count {
+  min-width: 1.4rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.print-btn {
+  border: 1px solid var(--border);
+  background: var(--entry);
+  color: var(--primary);
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius);
+  font-size: 0.88rem;
+}
+
+.ingredient-list {
+  list-style: none;
+  margin: 1rem 0 1.8rem;
+  padding: 0;
+}
+.ingredient-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px dashed var(--border);
+}
+.ingredient-list li:last-child {
+  border-bottom: none;
+}
+.ingredient-list input[type="checkbox"] {
+  margin-top: 0.15rem;
+  accent-color: var(--accent);
+}
+.ingredient-list .ingredient-amount {
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  min-width: 3.6rem;
+}
+.ingredient-list li.is-checked .ingredient-text {
+  text-decoration: line-through;
+  color: var(--secondary);
+}
+
+.instructions-list {
+  padding-left: 1.3rem;
+}
+.instructions-list li {
+  margin-bottom: 0.7rem;
+  line-height: 1.6;
+}
+
+@media print {
+  body > header, footer, #bg-clouds, #bg-stars, .recipe-filters, .servings-control, .print-btn, .breadcrumbs {
+    display: none !important;
+  }
+  body, .main {
+    max-width: 100% !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .ingredient-list li {
+    border-bottom: 1px solid #ccc;
   }
 }

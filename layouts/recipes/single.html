@@ -1,0 +1,53 @@
+{{ define "main" }}
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">{{ .Title }}</h1>
+
+    <div class="recipe-meta-bar">
+      {{ if .Params.prep_time }}<span>Prep: {{ .Params.prep_time }}</span>{{ end }}
+      {{ if .Params.cook_time }}<span>Cook: {{ .Params.cook_time }}</span>{{ end }}
+      {{ if .Params.servings }}
+      <span class="servings-control" data-base-servings="{{ .Params.servings }}">
+        Servings:
+        <button type="button" class="servings-btn" data-step="-1" aria-label="Decrease servings">&minus;</button>
+        <span class="servings-count" id="servings-count">{{ .Params.servings }}</span>
+        <button type="button" class="servings-btn" data-step="1" aria-label="Increase servings">+</button>
+      </span>
+      {{ end }}
+      <button type="button" class="print-btn" onclick="window.print()">Print</button>
+    </div>
+
+    {{ if .Params.tags }}
+    <div class="recipe-tags">
+      {{ range .Params.tags }}<span class="recipe-tag">{{ . }}</span>{{ end }}
+    </div>
+    {{ end }}
+  </header>
+
+  {{ with .Summary }}<p>{{ . }}</p>{{ end }}
+
+  {{ if .Params.ingredients }}
+  <h2>Ingredients</h2>
+  <ul class="ingredient-list" id="ingredient-list" data-recipe-id="{{ .RelPermalink }}">
+    {{ range $i, $ing := .Params.ingredients }}
+    <li data-base-amount="{{ $ing.amount }}" data-unit="{{ $ing.unit }}">
+      <input type="checkbox" id="ing-{{ $i }}">
+      <label for="ing-{{ $i }}" class="ingredient-text">
+        {{ if $ing.amount }}<span class="ingredient-amount">{{ $ing.amount }}{{ if $ing.unit }} {{ $ing.unit }}{{ end }}</span>{{ end }}
+        {{ $ing.item }}
+      </label>
+    </li>
+    {{ end }}
+  </ul>
+  {{ end }}
+
+  {{ if .Params.instructions }}
+  <h2>Instructions</h2>
+  <ol class="instructions-list">
+    {{ range .Params.instructions }}<li>{{ . }}</li>{{ end }}
+  </ol>
+  {{ end }}
+
+  {{ .Content }}
+</article>
+{{ end }}
