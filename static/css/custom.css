@@ -62,7 +62,7 @@ body {
   cursor: inherit;
 }
 html {
-  cursor: url("/cursors/star.svg") 16 16, auto;
+  cursor: url("/cursors/star.png") 16 16, url("/cursors/star.svg") 16 16, auto;
 }
 a,
 button,
@@ -77,7 +77,7 @@ header .logo a,
 .social-icons a,
 .share-buttons a,
 .top-link {
-  cursor: url("/cursors/star-active.svg") 16 16, pointer;
+  cursor: url("/cursors/star-active.png") 16 16, url("/cursors/star-active.svg") 16 16, pointer;
 }
 /* Keep native text-entry cursors where people are actually typing */
 input,
