@@ -1,4 +1,4 @@
-baseURL = "https://mklmch.github.io/random-thoughts/"
+baseURL = "https://YOUR-GITHUB-USERNAME.github.io/notebook/"
 languageCode = "en-us"
 title = "Notebook"
 theme = "PaperMod"
@@ -17,11 +17,11 @@ buildExpired = false
 [params]
   env = "production"
   title = "Notebook"
-  description = "Random thoughts."
-  keywords = ["blog"]
+  description = "Notes on philosophy, religion, physics, and how minds learn."
+  keywords = ["philosophy", "religion", "physics", "educational psychology", "blog"]
   author = "Mikel"
   DateFormat = "January 2, 2006"
-  defaultTheme = "auto" # auto | dark | light
+  defaultTheme = "dark" # auto | dark | light — dusk palette is the signature look
   disableThemeToggle = false
   ShowShareButtons = false
   ShowReadingTime = true
@@ -43,14 +43,14 @@ buildExpired = false
   # Home page ("profile-mode" style intro)
   [params.homeInfoParams]
     Title = "Notebook"
-    Content = "Occasional notes posted whenever something's worth writing down, not on a schedule."
+    Content = "Occasional notes on philosophy, religion, physics, and how people learn — posted whenever something's worth writing down, not on a schedule."
 
   [[params.socialIcons]]
     name = "rss"
     url = "index.xml"
   [[params.socialIcons]]
     name = "github"
-    url = "https://github.com/mklmch"
+    url = "https://github.com/YOUR-GITHUB-USERNAME"
 
   [params.assets]
     disableHLJS = true

@@ -1,0 +1,161 @@
+/* ---------------------------------------------------------------
+   Custom theme: "dusk" — a muted, greyish-blue palette with
+   Playfair Display headings, layered over PaperMod's base styles.
+   --------------------------------------------------------------- */
+
+@font-face {
+  font-family: "Playfair Display";
+  src: url("/fonts/playfair-display/playfair-display-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Playfair Display";
+  src: url("/fonts/playfair-display/playfair-display-latin-600-normal.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Playfair Display";
+  src: url("/fonts/playfair-display/playfair-display-latin-700-normal.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---- Palette: light ("overcast morning") ---- */
+:root {
+  --theme: rgb(234, 238, 243);
+  --entry: rgb(247, 249, 251);
+  --primary: rgb(42, 52, 65);
+  --secondary: rgb(103, 118, 135);
+  --tertiary: rgb(199, 209, 219);
+  --content: rgb(51, 62, 75);
+  --code-block-bg: rgb(36, 43, 53);
+  --code-bg: rgb(224, 230, 236);
+  --border: rgb(210, 219, 228);
+  --accent: rgb(74, 107, 133);
+}
+
+/* ---- Palette: dark ("dusk" — the signature look) ---- */
+:root[data-theme="dark"] {
+  --theme: rgb(18, 22, 29);
+  --entry: rgb(26, 32, 42);
+  --primary: rgb(210, 219, 229);
+  --secondary: rgb(138, 152, 168);
+  --tertiary: rgb(54, 64, 78);
+  --content: rgb(191, 201, 213);
+  --code-block-bg: rgb(12, 15, 20);
+  --code-bg: rgb(34, 41, 52);
+  --border: rgb(42, 50, 63);
+  --accent: rgb(140, 168, 194);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.post-title,
+.entry-header h2,
+h1, h2, h3,
+.profile h1,
+header .logo a,
+.archive-year,
+.archive-month {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.post-title,
+.entry-header h2 {
+  font-weight: 700;
+}
+
+a:hover,
+.entry-header a:hover,
+header .logo a:hover {
+  color: var(--accent) !important;
+}
+
+article a,
+.post-content a {
+  text-decoration-color: var(--tertiary);
+  text-underline-offset: 3px;
+}
+article a:hover,
+.post-content a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+/* Subtle motion on entry cards */
+.entry {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.entry:hover {
+  transform: translateY(-2px);
+}
+
+/* ---- Background starfield canvas ----
+   Fixed behind all content; the JS in static/js/stars.js draws to it. */
+#bg-stars {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+#bg-stars.is-visible {
+  opacity: 1;
+}
+
+/* ---- Cursor star trail ---- */
+.cursor-star {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  z-index: 9999;
+  clip-path: polygon(
+    50% 0%, 63% 35%, 100% 38%, 72% 60%,
+    82% 96%, 50% 76%, 18% 96%, 28% 60%,
+    0% 38%, 37% 35%
+  );
+  animation: cursor-star-fade 850ms ease-out forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes cursor-star-fade {
+  0% {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) scale(0.4) rotate(0deg);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(25deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3) rotate(70deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-star {
+    display: none;
+  }
+  #bg-stars {
+    display: none;
+  }
+  .entry {
+    transition: none;
+  }
+}
