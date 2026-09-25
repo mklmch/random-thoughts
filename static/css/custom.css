@@ -111,20 +111,20 @@ body {
    Which image is used is controlled by --cursor-default / --cursor-active,
    which differ per "world" (notebook vs recipes) below. */
 :root {
-  --cursor-default: url("../cursors/star.png") 16 16, url("../cursors/star.svg") 16 16;
-  --cursor-active: url("../cursors/star-active.png") 16 16, url("../cursors/star-active.svg") 16 16;
+  --cursor-default: url("../cursors/star.png") 10 10, url("../cursors/star.svg") 10 10;
+  --cursor-active: url("../cursors/star-active.png") 12 12, url("../cursors/star-active.svg") 12 12;
 }
 :root[data-world="recipes"] {
-  --cursor-default: url("../cursors/bloom.png") 16 16;
-  --cursor-active: url("../cursors/bloom-active.png") 19 19;
+  --cursor-default: url("../cursors/bloom.png") 10 10;
+  --cursor-active: url("../cursors/bloom-active.png") 12 12;
 }
 :root[data-world="bubbles"] {
-  --cursor-default: url("../cursors/bubble.png") 16 15;
-  --cursor-active: url("../cursors/bubble-active.png") 19 18;
+  --cursor-default: url("../cursors/bubble.png") 10 9;
+  --cursor-active: url("../cursors/bubble-active.png") 12 11;
 }
 :root[data-world="disco"] {
-  --cursor-default: url("../cursors/discoball.png") 15 15;
-  --cursor-active: url("../cursors/discoball-active.png") 18 18;
+  --cursor-default: url("../cursors/discoball.png") 9 10;
+  --cursor-active: url("../cursors/discoball-active.png") 11 12;
 }
 * {
   cursor: inherit;
