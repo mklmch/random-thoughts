@@ -1,4 +1,5 @@
-<link rel="stylesheet" href="{{ "css/custom.css" | relURL }}">
+{{- /* ?v= changes on every build, so browsers fetch the new file right after a deploy */ -}}
+<link rel="stylesheet" href="{{ "css/custom.css" | relURL }}?v={{ now.Unix }}">
 
 {{ if .Params.math }}
 <link rel="stylesheet" href="{{ "katex/katex.min.css" | relURL }}">
