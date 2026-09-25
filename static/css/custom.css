@@ -53,21 +53,22 @@
   --accent: rgb(140, 168, 194);
 }
 
-/* ---- Palette: "recipes" world — same family, lighter/airier mood ----
-   Applied regardless of the light/dark toggle: a cookbook you're using
-   at the counter should stay bright and legible. */
+/* ---- Palette: "recipes" world — "Night bloom" ----
+   A dark, mauve-tinted green garden at night, with white flowers that
+   glint like stars. Applied regardless of the light/dark toggle.
+   (Printing switches back to plain black-on-white — see @media print.) */
 :root[data-world="recipes"] {
-  --theme: rgb(241, 245, 249);
-  --entry: rgb(253, 254, 255);
-  --primary: rgb(51, 63, 78);
-  --secondary: rgb(112, 127, 143);
-  --tertiary: rgb(219, 228, 236);
-  --content: rgb(63, 76, 91);
-  --code-block-bg: rgb(240, 243, 247);
-  --code-bg: rgb(228, 235, 241);
-  --border: rgb(223, 231, 238);
-  --accent: rgb(83, 133, 165);
-  color-scheme: light;
+  --theme: rgb(52, 54, 47);
+  --entry: rgb(40, 42, 36);
+  --primary: rgb(247, 244, 238);
+  --secondary: rgb(186, 172, 178);
+  --tertiary: rgb(88, 80, 84);
+  --content: rgb(214, 208, 197);
+  --code-block-bg: rgb(30, 31, 26);
+  --code-bg: rgb(68, 60, 64);
+  --border: rgb(96, 80, 88);
+  --accent: rgb(206, 176, 189);
+  color-scheme: dark;
 }
 
 /* ---- Palette: "bubbles" world — pastel, iridescent, soft ----
@@ -114,8 +115,8 @@ body {
   --cursor-active: url("/cursors/star-active.png") 16 16, url("/cursors/star-active.svg") 16 16;
 }
 :root[data-world="recipes"] {
-  --cursor-default: url("/cursors/cloud.png") 18 13;
-  --cursor-active: url("/cursors/cloud-active.png") 18 16;
+  --cursor-default: url("/cursors/bloom.png") 16 16;
+  --cursor-active: url("/cursors/bloom-active.png") 19 19;
 }
 :root[data-world="bubbles"] {
   --cursor-default: url("/cursors/bubble.png") 16 15;
@@ -217,35 +218,55 @@ article a:hover,
   display: none;
 }
 
-/* ---- Background clouds (recipes world only) ---- */
-#bg-clouds {
+/* ---- Background "night bloom" canvas (recipes world only) ----
+   Scattered white flowers + twinkling dust, drawn by static/js/stars.js.
+   Sized by CSS so small mobile viewport changes just stretch it slightly
+   instead of re-scattering the flowers. */
+#bg-nightbloom {
   display: none;
   position: fixed;
   inset: 0;
-  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
   z-index: -1;
   pointer-events: none;
 }
-:root[data-world="recipes"] #bg-clouds {
+:root[data-world="recipes"] #bg-nightbloom {
   display: block;
 }
-#bg-clouds .cloud {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.65);
-  filter: blur(26px);
+:root[data-world="recipes"] body {
+  background:
+    radial-gradient(circle at 20% 10%, rgba(169, 141, 153, 0.12), transparent 45%),
+    radial-gradient(circle at 85% 85%, rgba(90, 74, 60, 0.22), transparent 50%),
+    var(--theme);
+  background-attachment: fixed;
 }
-:root[data-theme="dark"] #bg-clouds .cloud {
-  background: rgba(210, 221, 232, 0.18);
-}
-#bg-clouds .cloud-a { width: 380px; height: 150px; top: 6%;  left: 8%;  animation: cloud-drift 26s ease-in-out infinite; }
-#bg-clouds .cloud-b { width: 260px; height: 110px; top: 22%; right: 10%; animation: cloud-drift 32s ease-in-out infinite -8s; }
-#bg-clouds .cloud-c { width: 460px; height: 170px; bottom: 14%; left: 22%; animation: cloud-drift 38s ease-in-out infinite -16s; opacity: 0.8; }
-#bg-clouds .cloud-d { width: 220px; height: 90px;  bottom: 30%; right: 24%; animation: cloud-drift 22s ease-in-out infinite -4s; opacity: 0.7; }
 
-@keyframes cloud-drift {
-  0%, 100% { transform: translateX(0) translateY(0); }
-  50% { transform: translateX(36px) translateY(-8px); }
+/* Recipe pages get a dark panel behind the text so the flowers never
+   compete with the ingredient list you're actually cooking from. */
+:root[data-world="recipes"] body:not(.list) .post-single {
+  background: linear-gradient(160deg, rgba(46, 47, 40, 0.94), rgba(36, 38, 31, 0.94));
+  border: 1px solid var(--border);
+  outline: 1px solid rgba(169, 141, 153, 0.3);
+  outline-offset: 4px;
+  border-radius: 6px;
+  padding: 1.6rem 1.8rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.38);
+}
+@media (max-width: 600px) {
+  :root[data-world="recipes"] body:not(.list) .post-single {
+    padding: 1.1rem 1rem;
+  }
+}
+:root[data-world="recipes"] .post-title,
+:root[data-world="recipes"] .page-header h1 {
+  text-shadow: 0 0 14px rgba(247, 244, 238, 0.2);
+}
+:root[data-world="recipes"] .recipe-card {
+  background: linear-gradient(160deg, rgba(46, 47, 40, 0.94), rgba(36, 38, 31, 0.94));
+}
+:root[data-world="recipes"] .recipe-card:hover {
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(206, 176, 189, 0.35);
 }
 
 /* ---- Background glow + ambient canvas (bubbles world) ----
@@ -356,33 +377,48 @@ article a:hover,
   }
 }
 
-/* ---- Cursor cloud trail (recipes world) ---- */
-.cursor-cloud {
+/* ---- Cursor gold-sparkle + bumblebee trail (recipes world) ----
+   Sparkles carry the trail; a small bee drifts through now and then. */
+.cursor-spark {
   position: fixed;
   top: 0;
   left: 0;
-  font-size: 18px;
+  font-size: 14px;
   line-height: 1;
   pointer-events: none;
   z-index: 9999;
+  color: #f1d98a;
+  text-shadow: 0 0 6px rgba(212, 175, 55, 0.9), 0 0 12px rgba(241, 217, 138, 0.6);
   transform: translate(-50%, -50%);
-  animation: cursor-cloud-fade 1100ms ease-out forwards;
+  animation: cursor-spark-fade 700ms ease-out forwards;
   will-change: transform, opacity;
+  user-select: none;
 }
 
-@keyframes cursor-cloud-fade {
-  0% {
-    opacity: 0.85;
-    transform: translate(-50%, -50%) scale(0.6);
-  }
-  25% {
-    opacity: 0.95;
-    transform: translate(-50%, -50%) scale(1.05);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, calc(-50% - 22px)) scale(1.15);
-  }
+@keyframes cursor-spark-fade {
+  0%   { opacity: 1; transform: translate(-50%, -50%) scale(0.6) rotate(0deg); }
+  60%  { opacity: 0.9; }
+  100% { opacity: 0; transform: translate(-50%, -70%) scale(1.15) rotate(35deg); }
+}
+
+.cursor-bee {
+  position: fixed;
+  top: 0;
+  left: 0;
+  font-size: 16px;
+  line-height: 1;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  animation: cursor-bee-fly 650ms ease-out forwards;
+  will-change: transform, opacity;
+  user-select: none;
+}
+
+@keyframes cursor-bee-fly {
+  0%   { opacity: 1; transform: translate(-50%, -50%) rotate(-10deg) scale(0.85); }
+  45%  { opacity: 1; transform: translate(-50%, -62%) rotate(9deg) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -78%) rotate(-6deg) scale(0.85); }
 }
 
 /* ---- Cursor bubble trail (bubbles world) ---- */
@@ -452,14 +488,15 @@ article a:hover,
 
 @media (prefers-reduced-motion: reduce) {
   .cursor-star,
-  .cursor-cloud,
+  .cursor-spark,
+  .cursor-bee,
   .cursor-bubble,
   .cursor-discoball,
   .cursor-record {
     display: none;
   }
+  /* #bg-nightbloom stays: with reduced motion it's drawn once, fully still */
   #bg-stars,
-  #bg-clouds .cloud,
   #bg-bubbles,
   #bg-bubbles-glow,
   #bg-disco,
@@ -637,7 +674,30 @@ article a:hover,
 }
 
 @media print {
-  body > header, footer, #bg-clouds, #bg-stars, .recipe-filters, .servings-control, .print-btn, .breadcrumbs {
+  /* Night bloom is for the screen; the printout is plain black on white. */
+  :root[data-world="recipes"] {
+    --theme: #fff;
+    --entry: #fff;
+    --primary: #000;
+    --secondary: #444;
+    --tertiary: #ccc;
+    --content: #111;
+    --code-bg: #eee;
+    --border: #ccc;
+    --accent: #222;
+    color-scheme: light;
+  }
+  :root[data-world="recipes"] body:not(.list) .post-single {
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    padding: 0;
+  }
+  :root[data-world="recipes"] .post-title {
+    text-shadow: none;
+  }
+  body > header, footer, #bg-nightbloom, #bg-stars, .recipe-filters, .servings-control, .print-btn, .breadcrumbs, .top-link {
     display: none !important;
   }
   body, .main {

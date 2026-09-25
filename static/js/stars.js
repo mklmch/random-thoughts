@@ -2,17 +2,24 @@
   "use strict";
 
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduceMotion) return;
 
   var world = document.documentElement.dataset.world || "notebook";
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
   var STAR_COLORS = ["#c9d4de", "#9fb2c4", "#7592ab", "#b7c6d6", "#4f6a85"];
-  var CLOUDS = ["☁️", "🌥️", "⛅"];
+  var SPARK_GLYPHS = ["✦", "✧", "✱", "٭"];
+  var BEE_GLYPH = "🐝"; // 🐝
+  var BEE_INTERVAL = 320; // ms between bee sightings — the sparkles carry the trail
   var DISCO_GLYPHS = ["🪩", "record"]; // "record" spawns the hand-drawn vinyl instead of an emoji
+
+  // The recipes background is still flowers even with reduced motion — it just doesn't twinkle.
+  if (world === "recipes") initNightBloomBg(reduceMotion);
+  if (reduceMotion) return;
 
   /* ---------------- Cursor trail ---------------- */
   var canHover = window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   if (canHover) {
     var lastSpawn = 0;
+    var lastBee = 0;
     var MIN_INTERVAL = 45; // ms between spawns, keeps DOM churn light
 
     document.addEventListener("mousemove", function (e) {
@@ -22,8 +29,19 @@
 
       var el = document.createElement("div");
       if (world === "recipes") {
-        el.className = "cursor-cloud";
-        el.textContent = CLOUDS[Math.floor(Math.random() * CLOUDS.length)];
+        el.className = "cursor-spark";
+        el.textContent = SPARK_GLYPHS[Math.floor(Math.random() * SPARK_GLYPHS.length)];
+        el.style.fontSize = (10 + Math.random() * 10) + "px";
+        if (now - lastBee >= BEE_INTERVAL) {
+          lastBee = now;
+          var bee = document.createElement("div");
+          bee.className = "cursor-bee";
+          bee.textContent = BEE_GLYPH;
+          bee.style.left = e.clientX + "px";
+          bee.style.top = e.clientY + "px";
+          document.body.appendChild(bee);
+          bee.addEventListener("animationend", function () { bee.remove(); });
+        }
       } else if (world === "bubbles") {
         el.className = "cursor-bubble";
         var bsize = 8 + Math.random() * 12;
@@ -54,7 +72,204 @@
     }, { passive: true });
   }
 
-  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  /* ---------------- Background "night bloom" (recipes world) ----
+     Detailed white flowers (soft round blossoms + little star-lilies) scattered
+     over the dark mauve-green page, with fine twinkling dust between them.
+     Most flowers are drawn once to an offscreen canvas; only the dust and a
+     handful of glowing "hero" blooms are redrawn each frame to twinkle. */
+  function initNightBloomBg(still) {
+    var canvas = document.getElementById("bg-nightbloom");
+    if (!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext("2d");
+    var base = document.createElement("canvas");
+    var bctx = base.getContext("2d");
+    var dust = [], heroes = [];
+    var lastW = 0, lastH = 0;
+
+    // deterministic PRNG, so the "garden" is laid out the same way on every page
+    function makeRng(seed) {
+      var s = seed >>> 0;
+      return function () {
+        s = (s + 0x6D2B79F5) | 0;
+        var t = Math.imul(s ^ (s >>> 15), 1 | s);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    function drawFlower(c, x, y, r, rot, petals, pointed, alpha, glow) {
+      c.save();
+      c.translate(x, y);
+      c.rotate(rot);
+      c.globalAlpha = alpha;
+      if (glow > 0) {
+        c.shadowBlur = r * 2.4 * glow;
+        c.shadowColor = "rgba(247,244,238,0.6)";
+      }
+      for (var i = 0; i < petals; i++) {
+        c.save();
+        c.rotate((i / petals) * Math.PI * 2);
+        var len = pointed ? r * 0.95 : r;
+        c.beginPath();
+        if (pointed) {
+          // narrow lily/star petal, anchored at the center so petals overlap there
+          c.moveTo(0, 0);
+          c.quadraticCurveTo(r * 0.4, len * 0.4, 0, len);
+          c.quadraticCurveTo(-r * 0.4, len * 0.4, 0, 0);
+          c.closePath();
+        } else {
+          c.ellipse(0, r * 0.5, r * 0.42, r * 0.5, 0, 0, Math.PI * 2);
+        }
+        var g = c.createLinearGradient(0, 0, 0, len);
+        g.addColorStop(0, "rgba(222,216,204,0.6)");
+        g.addColorStop(1, "rgba(255,253,248,0.98)");
+        c.fillStyle = g;
+        c.fill();
+        c.strokeStyle = "rgba(180,170,155,0.3)";
+        c.lineWidth = Math.max(0.4, r * 0.025);
+        c.stroke();
+        c.restore();
+      }
+      c.shadowBlur = 0;
+      var cg = c.createRadialGradient(0, 0, 0, 0, 0, r * 0.32);
+      cg.addColorStop(0, "rgba(255,247,222,0.95)");
+      cg.addColorStop(1, "rgba(214,175,90,0.5)");
+      c.fillStyle = cg;
+      c.beginPath();
+      c.arc(0, 0, r * 0.28, 0, Math.PI * 2);
+      c.fill();
+      c.restore();
+    }
+
+    function drawGlint(c, x, y, r, alpha) {
+      var arm = r * 3.2;
+      c.save();
+      c.translate(x, y);
+      c.globalAlpha = alpha;
+      c.fillStyle = "rgb(247,244,238)";
+      c.beginPath();
+      c.moveTo(0, -arm);
+      c.quadraticCurveTo(r * 0.4, -r * 0.4, arm, 0);
+      c.quadraticCurveTo(r * 0.4, r * 0.4, 0, arm);
+      c.quadraticCurveTo(-r * 0.4, r * 0.4, -arm, 0);
+      c.quadraticCurveTo(-r * 0.4, -r * 0.4, 0, -arm);
+      c.fill();
+      c.restore();
+    }
+
+    function build() {
+      var w = Math.round(window.innerWidth * dpr);
+      var h = Math.round(window.innerHeight * dpr);
+      canvas.width = base.width = w;
+      canvas.height = base.height = h;
+      var area = window.innerWidth * window.innerHeight; // in CSS px
+      var rng = makeRng(8181);
+      bctx.clearRect(0, 0, w, h);
+
+      // faint sprigs tucked beneath the blooms
+      var sprigs = Math.round(area / 11000);
+      bctx.strokeStyle = "rgba(190,196,178,0.14)";
+      bctx.lineWidth = 1 * dpr;
+      bctx.lineCap = "round";
+      for (var s = 0; s < sprigs; s++) {
+        var sx = rng() * w, sy = rng() * h;
+        var sl = (8 + rng() * 14) * dpr;
+        var sa = -Math.PI / 2 + (rng() - 0.5) * 0.5;
+        bctx.beginPath();
+        bctx.moveTo(sx, sy);
+        bctx.lineTo(sx + Math.cos(sa) * sl, sy + Math.sin(sa) * sl);
+        bctx.stroke();
+      }
+
+      // the blooms: mixed petal counts and shapes; ~1 in 6 is a glowing "hero" that twinkles
+      heroes = [];
+      var count = Math.min(170, Math.max(20, Math.round(area / 18000)));
+      for (var i = 0; i < count; i++) {
+        var f = {
+          x: rng() * w,
+          y: rng() * h,
+          hero: rng() < 0.16,
+          rot: rng() * Math.PI * 2,
+          petals: 4 + Math.floor(rng() * 5),
+          pointed: rng() < 0.5
+        };
+        f.r = (f.hero ? 9 + rng() * 6 : 4 + rng() * 5) * dpr;
+        f.alpha = f.hero ? 0.95 : 0.6 + rng() * 0.35;
+        if (f.hero) {
+          f.phase = Math.random() * Math.PI * 2;
+          f.speed = 0.0005 + Math.random() * 0.0007;
+          heroes.push(f);
+        } else {
+          drawFlower(bctx, f.x, f.y, f.r, f.rot, f.petals, f.pointed, f.alpha, 0);
+        }
+      }
+
+      // fine twinkling dust between the flowers
+      dust = [];
+      var dCount = Math.min(360, Math.round(area / 9000));
+      for (var d = 0; d < dCount; d++) {
+        var big = rng() < 0.1;
+        dust.push({
+          x: rng() * w,
+          y: rng() * h,
+          r: (big ? 1.6 + rng() * 1.4 : 0.6 + rng() * 0.9) * dpr,
+          big: big,
+          glint: big && rng() < 0.4,
+          base: 0.45 + rng() * 0.4,
+          phase: Math.random() * Math.PI * 2,
+          speed: 0.0008 + Math.random() * 0.0016
+        });
+      }
+    }
+
+    function frame(t) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(base, 0, 0);
+
+      for (var i = 0; i < dust.length; i++) {
+        var p = dust[i];
+        var tw = Math.sin(t * p.speed + p.phase) * 0.5 + 0.5;
+        var a = p.base * (0.35 + 0.65 * tw);
+        if (p.big) {
+          ctx.shadowBlur = 5 * dpr;
+          ctx.shadowColor = "rgba(247,244,238," + (a * 0.8).toFixed(3) + ")";
+        }
+        if (p.glint) {
+          drawGlint(ctx, p.x, p.y, p.r, a);
+        } else {
+          ctx.globalAlpha = a;
+          ctx.fillStyle = "rgb(247,244,238)";
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+        ctx.shadowBlur = 0;
+      }
+
+      for (var j = 0; j < heroes.length; j++) {
+        var f = heroes[j];
+        var hw = Math.sin(t * f.speed + f.phase) * 0.5 + 0.5;
+        drawFlower(ctx, f.x, f.y, f.r, f.rot, f.petals, f.pointed, 0.8 + 0.2 * hw, 0.4 + 0.6 * hw);
+      }
+
+      if (!still) requestAnimationFrame(frame);
+    }
+
+    function onResize(force) {
+      var w = window.innerWidth, h = window.innerHeight;
+      // mobile browsers resize on scroll as the URL bar shows/hides — ignore small height changes
+      if (!force && Math.abs(w - lastW) < 1 && Math.abs(h - lastH) < 150) return;
+      lastW = w;
+      lastH = h;
+      build();
+      if (still) frame(performance.now());
+    }
+
+    window.addEventListener("resize", function () { onResize(false); }, { passive: true });
+    onResize(true);
+    if (!still) requestAnimationFrame(frame);
+  }
 
   /* ---------------- Background starfield (notebook world) ---------------- */
   function initStarfield() {
