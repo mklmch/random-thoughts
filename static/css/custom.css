@@ -111,20 +111,20 @@ body {
    Which image is used is controlled by --cursor-default / --cursor-active,
    which differ per "world" (notebook vs recipes) below. */
 :root {
-  --cursor-default: url("../cursors/star.png") 10 10, url("../cursors/star.svg") 10 10;
-  --cursor-active: url("../cursors/star-active.png") 12 12, url("../cursors/star-active.svg") 12 12;
+  --cursor-default: url("../cursors/star.png") 7 7, url("../cursors/star.svg") 7 7;
+  --cursor-active: url("../cursors/star-active.png") 8 8, url("../cursors/star-active.svg") 8 8;
 }
 :root[data-world="recipes"] {
-  --cursor-default: url("../cursors/bloom.png") 10 10;
-  --cursor-active: url("../cursors/bloom-active.png") 12 12;
+  --cursor-default: url("../cursors/bee.png") 7 7;
+  --cursor-active: url("../cursors/bee-active.png") 8 8;
 }
 :root[data-world="bubbles"] {
-  --cursor-default: url("../cursors/bubble.png") 10 9;
-  --cursor-active: url("../cursors/bubble-active.png") 12 11;
+  --cursor-default: url("../cursors/bubble.png") 7 7;
+  --cursor-active: url("../cursors/bubble-active.png") 8 8;
 }
 :root[data-world="disco"] {
-  --cursor-default: url("../cursors/discoball.png") 9 10;
-  --cursor-active: url("../cursors/discoball-active.png") 11 12;
+  --cursor-default: url("../cursors/discoball.png") 7 7;
+  --cursor-active: url("../cursors/discoball-active.png") 8 8;
 }
 * {
   cursor: inherit;
@@ -405,8 +405,9 @@ article a:hover,
   position: fixed;
   top: 0;
   left: 0;
-  font-size: 16px;
-  line-height: 1;
+  width: 16px;
+  height: 16px;
+  background: url("../cursors/bee-trail.png") center / contain no-repeat;
   pointer-events: none;
   z-index: 10000;
   transform: translate(-50%, -50%);
@@ -433,7 +434,7 @@ article a:hover,
   z-index: 9999;
   background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.2) 40%, rgba(200, 230, 255, 0.3) 70%, rgba(210, 180, 245, 0.2) 100%);
   border: 1px solid rgba(255, 255, 255, 0.65);
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.45), inset 0 0 4px rgba(255, 255, 255, 0.55);
+  box-shadow: 0 0 0 1px rgba(135, 145, 200, 0.55), 0 0 6px rgba(255, 255, 255, 0.45), inset 0 0 4px rgba(255, 255, 255, 0.55);
   animation: cursor-bubble-rise 1300ms ease-out forwards;
   will-change: transform, opacity;
 }
@@ -450,8 +451,9 @@ article a:hover,
   position: fixed;
   top: 0;
   left: 0;
-  font-size: 16px;
-  line-height: 1;
+  width: 16px;
+  height: 16px;
+  background: url("../cursors/discoball-trail.png") center / contain no-repeat;
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);

@@ -7,9 +7,8 @@
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
   var STAR_COLORS = ["#c9d4de", "#9fb2c4", "#7592ab", "#b7c6d6", "#4f6a85"];
   var SPARK_GLYPHS = ["✦", "✧", "✱", "٭"];
-  var BEE_GLYPH = "🐝"; // 🐝
   var BEE_INTERVAL = 320; // ms between bee sightings — the sparkles carry the trail
-  var DISCO_GLYPHS = ["🪩", "record"]; // "record" spawns the hand-drawn vinyl instead of an emoji
+  var DISCO_GLYPHS = ["discoball", "record"]; // both are images, so they look the same on every device
 
   // The recipes background is still flowers even with reduced motion — it just doesn't twinkle.
   if (world === "recipes") initNightBloomBg(reduceMotion);
@@ -35,8 +34,7 @@
         if (now - lastBee >= BEE_INTERVAL) {
           lastBee = now;
           var bee = document.createElement("div");
-          bee.className = "cursor-bee";
-          bee.textContent = BEE_GLYPH;
+          bee.className = "cursor-bee"; // drawn from cursors/bee-trail.png, same bee as the pointer
           bee.style.left = e.clientX + "px";
           bee.style.top = e.clientY + "px";
           document.body.appendChild(bee);
@@ -52,8 +50,7 @@
         if (pick === "record") {
           el.className = "cursor-record";
         } else {
-          el.className = "cursor-discoball";
-          el.textContent = pick;
+          el.className = "cursor-discoball"; // drawn from cursors/discoball-trail.png, same ball as the pointer
         }
       } else {
         el.className = "cursor-star";
