@@ -39,10 +39,10 @@ ingredients:
     item: "lemons"
   - amount: 0.5
     unit: ""
-    item: "bunch of asparagus, cut in half
+    item: "bunch of asparagus, cut in half"
   - amount: 2
     unit: ""
-    item: "red bell peppers, diced
+    item: "red bell peppers, diced"
   - amount: 4
     unit: "oz"
     item: "sugar snap peas"
