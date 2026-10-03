@@ -265,8 +265,91 @@ article a:hover,
 :root[data-world="recipes"] .recipe-card {
   background: linear-gradient(160deg, rgba(46, 47, 40, 0.94), rgba(36, 38, 31, 0.94));
 }
-:root[data-world="recipes"] .recipe-card:hover {
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(206, 176, 189, 0.35);
+
+/* ---- Recipes: links and buttons glow like the gold sparkle trail ----
+   Hover glow only on devices with a real mouse (so it doesn't "stick" after
+   a tap on phones); keyboard focus gets the same glow everywhere. */
+:root[data-world="recipes"] {
+  --glow-ink: rgb(248, 236, 204);
+  --glow-text: 0 0 6px rgba(247, 236, 200, 0.75), 0 0 14px rgba(241, 217, 138, 0.5), 0 0 26px rgba(241, 217, 138, 0.25);
+  --glow-box: 0 0 0 1px rgba(241, 217, 138, 0.4), 0 0 12px rgba(241, 217, 138, 0.45), 0 0 28px rgba(247, 244, 238, 0.16);
+  --glow-border: rgba(241, 217, 138, 0.75);
+}
+:root[data-world="recipes"] a,
+:root[data-world="recipes"] button {
+  transition: color 0.25s ease, text-shadow 0.25s ease, box-shadow 0.25s ease,
+              border-color 0.25s ease, filter 0.25s ease, transform 0.2s ease;
+}
+
+/* text links: menu, logo, footer, breadcrumbs, links inside recipe notes */
+:root[data-world="recipes"] a:not(.recipe-card):not(.top-link):focus-visible {
+  color: var(--glow-ink) !important;
+  text-shadow: var(--glow-text);
+  outline: none;
+}
+/* bordered buttons: tag chips, servings +/-, print, back-to-top */
+:root[data-world="recipes"] .recipe-chip:focus-visible,
+:root[data-world="recipes"] .servings-btn:focus-visible,
+:root[data-world="recipes"] .print-btn:focus-visible,
+:root[data-world="recipes"] .top-link:focus-visible {
+  border-color: var(--glow-border);
+  color: var(--glow-ink);
+  text-shadow: 0 0 6px rgba(247, 236, 200, 0.6);
+  box-shadow: var(--glow-box);
+  outline: none;
+}
+/* icon-only buttons: light/dark toggle */
+:root[data-world="recipes"] #theme-toggle:focus-visible svg {
+  filter: drop-shadow(0 0 4px rgba(241, 217, 138, 0.9)) drop-shadow(0 0 10px rgba(241, 217, 138, 0.4));
+}
+:root[data-world="recipes"] #theme-toggle:focus-visible {
+  outline: none;
+}
+/* recipe cards: the whole card glows, plus its title */
+:root[data-world="recipes"] .recipe-card:focus-visible {
+  border-color: rgba(241, 217, 138, 0.6);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(241, 217, 138, 0.35),
+              0 0 22px rgba(241, 217, 138, 0.28), 0 0 46px rgba(247, 244, 238, 0.1);
+  outline: none;
+}
+:root[data-world="recipes"] .recipe-card:focus-visible h3 {
+  color: var(--glow-ink);
+  text-shadow: 0 0 8px rgba(247, 236, 200, 0.6), 0 0 18px rgba(241, 217, 138, 0.35);
+}
+
+@media (hover: hover) {
+  :root[data-world="recipes"] a:not(.recipe-card):not(.top-link):hover {
+    color: var(--glow-ink) !important;
+    text-shadow: var(--glow-text);
+  }
+  :root[data-world="recipes"] .recipe-chip:hover,
+  :root[data-world="recipes"] .servings-btn:hover,
+  :root[data-world="recipes"] .print-btn:hover,
+  :root[data-world="recipes"] .top-link:hover {
+    border-color: var(--glow-border);
+    color: var(--glow-ink);
+    text-shadow: 0 0 6px rgba(247, 236, 200, 0.6);
+    box-shadow: var(--glow-box);
+  }
+  :root[data-world="recipes"] #theme-toggle:hover svg {
+    filter: drop-shadow(0 0 4px rgba(241, 217, 138, 0.9)) drop-shadow(0 0 10px rgba(241, 217, 138, 0.4));
+  }
+  :root[data-world="recipes"] .recipe-card:hover {
+    border-color: rgba(241, 217, 138, 0.6);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(241, 217, 138, 0.35),
+                0 0 22px rgba(241, 217, 138, 0.28), 0 0 46px rgba(247, 244, 238, 0.1);
+  }
+  :root[data-world="recipes"] .recipe-card:hover h3 {
+    color: var(--glow-ink);
+    text-shadow: 0 0 8px rgba(247, 236, 200, 0.6), 0 0 18px rgba(241, 217, 138, 0.35);
+  }
+}
+
+/* a selected tag chip keeps its filled look (dark text on mauve) while glowing */
+:root[data-world="recipes"] .recipe-chip.is-active:hover,
+:root[data-world="recipes"] .recipe-chip.is-active:focus-visible {
+  color: var(--theme);
+  text-shadow: none;
 }
 
 /* ---- Background glow + ambient canvas (bubbles world) ----
