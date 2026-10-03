@@ -1,48 +1,61 @@
 ---
-title: "Simple Baked Oatmeal"
+title: "Lemon, Shrimp, and Prosciutto Pasta"
 date: 2026-09-24
-tags: ["breakfast", "vegetarian", "make-ahead"]
-prep_time: "10 min"
-cook_time: "35 min"
-servings: 6
-summary: "A make-ahead breakfast that reheats well all week — barely sweet, and forgiving about what fruit you throw in."
+tags: ["lunch", "dinner", "make-ahead", "pasta"]
+prep_time: "20 min"
+cook_time: "20 min"
+servings: 4
+summary: "Quick and delicious, veggie packed pasta dish that saves well. "
 ingredients:
+  - amount: 8
+    unit: "oz"
+    item: "uncooked angel hair pasta (gluten free)"
+  - amount: 2
+    unit: "oz"
+    item: "thinly sliced prosciutto"
+  - amount: 0.25
+    unit: "cup"
+    item: "extra-virgin olive oil, divided"
+  - amount: 5
+    unit: ""
+    item: "garlic cloves, minced"
   - amount: 2
     unit: "cups"
-    item: "rolled oats"
+    item: "multicolored cherry tomatoes, halved"
   - amount: 0.5
     unit: "cup"
-    item: "walnuts, chopped"
-  - amount: 0.33
-    unit: "cup"
-    item: "maple syrup"
-  - amount: 2
-    unit: "tsp"
-    item: "baking powder"
-  - amount: 1
-    unit: "tsp"
-    item: "cinnamon"
+    item: "thinly sliced fresh basil, divided"
   - amount: 0.5
     unit: "tsp"
-    item: "salt"
-  - amount: 2
-    unit: "cups"
-    item: "milk"
+    item: "kosher salt"
+  - amount: 0.25
+    unit: "tsp"
+    item: "crushed red pepper"
+  - amount: 12
+    unit: "oz"
+    item: "peeled and deveined tail-on raw large shrimp"
   - amount: 2
     unit: ""
-    item: "eggs"
+    item: "lemons"
+  - amount: 0.5
+    unit: ""
+    item: "bunch of asparagus, cut in half
   - amount: 2
-    unit: "tsp"
-    item: "vanilla extract"
-  - amount: 1.5
-    unit: "cups"
-    item: "berries, fresh or frozen"
+    unit: ""
+    item: "red bell peppers, diced
+  - amount: 4
+    unit: "oz"
+    item: "sugar snap peas"
+  - amount: ""
+    unit: ""
+    item: "parmesan cheese, grated"
+  
 instructions:
-  - "Preheat the oven to 375°F (190°C) and grease a 9x9-inch baking dish."
-  - "In a large bowl, mix the oats, walnuts, baking powder, cinnamon, and salt."
-  - "In a separate bowl, whisk together the milk, maple syrup, eggs, and vanilla."
-  - "Spread the berries over the bottom of the baking dish, pour the oat mixture over them, then pour the wet mixture evenly on top."
-  - "Bake for 35–40 minutes, until set and golden on top. Let cool for 5 minutes before serving."
+  - "Cook pasta according to package directions. Reserve 1 cup of cooking liquid. Drain. "
+  - "Cook prosciutto and 2 Tbsp of olive oil in a large skillet over medium-high heat, stirring often, until prosciutto is crisp. Transfer prosciutto to paper towels to drain."
+  - "Add garlic to pan: cook, stirring often, until golden (1-2 minutes)."
+  - "Add tomatoes, red bell pepper, asparagus, sugar snap peas, 1/4 cup of basil, salt, and crushed red pepper. Cook until the tomatoes begin to release their juices (~4 minutes)."
+  - "Stir in up to 1 cup of reserved cooking liquid to thin sauce to desired consistency."
+  - "Halve 1 lemon; squeeze juice from both halves into sauce. Stir in pasta and remaining 2 Tbsp olive oil."
+  - "Top with prosciutto, parmesan, and remaining 1/4 cup of basil." 
 ---
-
-Scales well if doubled into a 9x13 dish — just add a few extra minutes in the oven. Keeps in the fridge about 5 days.
