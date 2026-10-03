@@ -55,7 +55,10 @@ instructions:
   - "Cook prosciutto and 2 Tbsp of olive oil in a large skillet over medium-high heat, stirring often, until prosciutto is crisp. Transfer prosciutto to paper towels to drain."
   - "Add garlic to pan: cook, stirring often, until golden (1-2 minutes)."
   - "Add tomatoes, red bell pepper, asparagus, sugar snap peas, 1/4 cup of basil, salt, and crushed red pepper. Cook until the tomatoes begin to release their juices (~4 minutes)."
+  - "Cook shrimp in separate pan. Add to pasta once cooked. (See note below if meal-prepping)."
   - "Stir in up to 1 cup of reserved cooking liquid to thin sauce to desired consistency."
   - "Halve 1 lemon; squeeze juice from both halves into sauce. Stir in pasta and remaining 2 Tbsp olive oil."
   - "Top with prosciutto, parmesan, and remaining 1/4 cup of basil." 
 ---
+
+If saving the dish, cook shrimp fresh for each meal (or don't include the shrimp). 
