@@ -13,7 +13,7 @@ ingredients:
   - amount: 2
     unit: "oz"
     item: "thinly sliced prosciutto"
-  - amount: 0.25
+  - amount: 1/4
     unit: "cup"
     item: "extra-virgin olive oil, divided"
   - amount: 5
@@ -22,13 +22,13 @@ ingredients:
   - amount: 2
     unit: "cups"
     item: "multicolored cherry tomatoes, halved"
-  - amount: 0.5
+  - amount: 1/2
     unit: "cup"
     item: "thinly sliced fresh basil, divided"
-  - amount: 0.5
+  - amount: 1/2
     unit: "tsp"
     item: "kosher salt"
-  - amount: 0.25
+  - amount: 1/4
     unit: "tsp"
     item: "crushed red pepper"
   - amount: 12
@@ -37,7 +37,7 @@ ingredients:
   - amount: 2
     unit: ""
     item: "lemons"
-  - amount: 0.5
+  - amount: 1/2
     unit: ""
     item: "bunch of asparagus, cut in half"
   - amount: 2
